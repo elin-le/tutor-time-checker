@@ -1,0 +1,1568 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Elin & Hannah Study Sync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  /* Layout: two person-colored worlds (Elin navy, Hannah burgundy) on a white page; clocks on top, shared overlap strip below. */
+  :root {
+    --bg: #ffffff; --surface: #f5f6fa; --surface-2: #e9ecf4; --ink: #12182b; --muted: #596279; --line: #dde1ec;
+    --navy: #1c2d5a; --navy-soft: #e6eaf6; --on-navy: #ffffff;
+    --burgundy: #7b1e3b; --burgundy-soft: #f6e4ea; --on-burgundy: #ffffff;
+    --ok: #1c7350; --ok-soft: #ddf2e8; --warn: #9a5700; --warn-soft: #fbefd6;
+    --font-display: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
+    --font-body: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0c1222; --surface: #131b31; --surface-2: #1c2644; --ink: #edf0f8; --muted: #98a2bc; --line: #27324f;
+      --navy: #8aa0e6; --navy-soft: #1f2b52; --on-navy: #0c1222;
+      --burgundy: #d1647f; --burgundy-soft: #3a1a29; --on-burgundy: #1a0b11;
+      --ok: #62d1a0; --ok-soft: #14352a; --warn: #f0b254; --warn-soft: #3a2a10;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0c1222; --surface: #131b31; --surface-2: #1c2644; --ink: #edf0f8; --muted: #98a2bc; --line: #27324f;
+    --navy: #8aa0e6; --navy-soft: #1f2b52; --on-navy: #0c1222;
+    --burgundy: #d1647f; --burgundy-soft: #3a1a29; --on-burgundy: #1a0b11;
+    --ok: #62d1a0; --ok-soft: #14352a; --warn: #f0b254; --warn-soft: #3a2a10;
+    color-scheme: dark;
+  }
+  html, body { height: auto; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, .f-display { font-family: var(--font-display); letter-spacing: -0.01em; text-wrap: balance; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  button { font-family: inherit; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; padding: .5rem 1rem; border-radius: 999px; font-weight: 600; font-size: .85rem; border: 1px solid var(--line); background: var(--bg); color: var(--ink); cursor: pointer; transition: background .15s, border-color .15s; line-height: 1.2; }
+  .btn:hover { background: var(--surface); border-color: var(--muted); }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .btn-primary:hover { background: var(--ink); opacity: .88; }
+  .btn-navy { background: var(--navy); color: var(--on-navy); border-color: var(--navy); }
+  .btn-navy:hover { background: var(--navy); opacity: .9; }
+  .btn-burg { background: var(--burgundy); color: var(--on-burgundy); border-color: var(--burgundy); }
+  .btn-burg:hover { background: var(--burgundy); opacity: .9; }
+  .btn-warn { color: var(--warn); border-color: var(--warn); background: var(--bg); }
+  .btn-sm { padding: .3rem .7rem; font-size: .78rem; }
+  .btn:focus-visible, .input:focus-visible, .slot:focus-visible, .tab:focus-visible, .seg-b:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  .input { width: 100%; padding: .5rem .75rem; border: 1px solid var(--line); border-radius: .75rem; background: var(--bg); color: var(--ink); font: inherit; min-width: 0; }
+  textarea.input { resize: vertical; min-height: 4.5rem; }
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: 1.25rem; }
+  .card-s { background: var(--surface); border-radius: 1.25rem; }
+  .lbl { font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--muted); }
+  .chip { display: inline-flex; align-items: center; gap: .35rem; padding: .18rem .6rem; border-radius: 999px; font-size: .74rem; font-weight: 600; background: var(--surface-2); color: var(--ink); line-height: 1.35; }
+  .chip-ok { background: var(--ok-soft); color: var(--ok); }
+  .chip-warn { background: var(--warn-soft); color: var(--warn); }
+  .chip-dash { background: transparent; border: 1px dashed var(--muted); color: var(--muted); }
+  a.chip:hover { background: var(--line); }
+  .slot { display: inline-flex; flex-direction: column; align-items: flex-start; padding: .45rem .8rem; border-radius: .9rem; border: 1px solid var(--line); background: var(--bg); cursor: pointer; text-align: left; line-height: 1.25; color: var(--ink); }
+  .slot:hover { border-color: var(--ink); background: var(--surface); }
+  .seg { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px; gap: 2px; max-width: 100%; }
+  .seg-b { padding: .32rem .8rem; border-radius: 999px; font-weight: 600; font-size: .8rem; color: var(--muted); cursor: pointer; white-space: nowrap; }
+  .seg-b[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+  .tab { padding: .55rem .95rem; border-radius: 999px; font-weight: 600; font-size: .86rem; color: var(--muted); cursor: pointer; white-space: nowrap; display: inline-flex; align-items: center; gap: .4rem; }
+  .tab:hover { color: var(--ink); background: var(--surface); }
+  .tab[aria-current="page"] { background: var(--ink); color: var(--bg); }
+  .dot { width: .6rem; height: .6rem; border-radius: 999px; display: inline-block; flex: none; }
+  .scroll-x { overflow-x: auto; scrollbar-width: none; }
+  .scroll-x::-webkit-scrollbar { display: none; }
+  .hatch { background: repeating-linear-gradient(135deg, var(--surface-2) 0 4px, var(--surface) 4px 8px); }
+  .stripes { background: repeating-linear-gradient(135deg, var(--navy) 0 7px, var(--burgundy) 7px 14px); }
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  @keyframes rise { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .rise { animation: rise .22s ease-out; }
+</style>
+
+<div id="root"></div>
+
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: { bg: 'var(--bg)', surface: 'var(--surface)', 'surface-2': 'var(--surface-2)', ink: 'var(--ink)', muted: 'var(--muted)', line: 'var(--line)', navy: 'var(--navy)', burgundy: 'var(--burgundy)' },
+        borderColor: { DEFAULT: 'var(--line)' },
+        fontFamily: {
+          sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+          display: ['"Bricolage Grotesque"', '"DM Sans"', 'system-ui', 'sans-serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.26.2/babel.min.js"></script>
+<script>
+(function (root) {
+  'use strict';
+  const MIN = 60000, HOUR = 3600000, DAY = 86400000, STEP = 15 * MIN;
+
+  const CITIES = [
+    { id: 'hcm', city: 'Ho Chi Minh City', cc: 'VN', tz: 'Asia/Ho_Chi_Minh' },
+    { id: 'hanoi', city: 'Hà Nội', cc: 'VN', tz: 'Asia/Ho_Chi_Minh' },
+    { id: 'danang', city: 'Đà Nẵng', cc: 'VN', tz: 'Asia/Ho_Chi_Minh' },
+    { id: 'toronto', city: 'Toronto', cc: 'CA', tz: 'America/Toronto' },
+    { id: 'montreal', city: 'Montréal', cc: 'CA', tz: 'America/Toronto' },
+    { id: 'vancouver', city: 'Vancouver', cc: 'CA', tz: 'America/Vancouver' },
+    { id: 'calgary', city: 'Calgary', cc: 'CA', tz: 'America/Edmonton' },
+    { id: 'halifax', city: 'Halifax', cc: 'CA', tz: 'America/Halifax' },
+    { id: 'nyc', city: 'New York', cc: 'US', tz: 'America/New_York' },
+    { id: 'chicago', city: 'Chicago', cc: 'US', tz: 'America/Chicago' },
+    { id: 'la', city: 'Los Angeles', cc: 'US', tz: 'America/Los_Angeles' },
+    { id: 'london', city: 'London', cc: 'GB', tz: 'Europe/London' },
+    { id: 'paris', city: 'Paris', cc: 'FR', tz: 'Europe/Paris' },
+    { id: 'berlin', city: 'Berlin', cc: 'DE', tz: 'Europe/Berlin' },
+    { id: 'dubai', city: 'Dubai', cc: 'AE', tz: 'Asia/Dubai' },
+    { id: 'bangkok', city: 'Bangkok', cc: 'TH', tz: 'Asia/Bangkok' },
+    { id: 'singapore', city: 'Singapore', cc: 'SG', tz: 'Asia/Singapore' },
+    { id: 'kl', city: 'Kuala Lumpur', cc: 'MY', tz: 'Asia/Kuala_Lumpur' },
+    { id: 'manila', city: 'Manila', cc: 'PH', tz: 'Asia/Manila' },
+    { id: 'hk', city: 'Hong Kong', cc: 'HK', tz: 'Asia/Hong_Kong' },
+    { id: 'tokyo', city: 'Tokyo', cc: 'JP', tz: 'Asia/Tokyo' },
+    { id: 'seoul', city: 'Seoul', cc: 'KR', tz: 'Asia/Seoul' },
+    { id: 'sydney', city: 'Sydney', cc: 'AU', tz: 'Australia/Sydney' },
+    { id: 'auckland', city: 'Auckland', cc: 'NZ', tz: 'Pacific/Auckland' }
+  ];
+  const cityById = (id) => CITIES.find((c) => c.id === id) || CITIES[0];
+  const cityLabel = (c) => c.city + ' (' + c.cc + ')';
+
+  // ---------- Intl helpers ----------
+  const fcache = new Map();
+  function dtf(locale, tz, o) {
+    const k = locale + '|' + tz + '|' + JSON.stringify(o);
+    let f = fcache.get(k);
+    if (!f) { f = new Intl.DateTimeFormat(locale, Object.assign({ timeZone: tz }, o)); fcache.set(k, f); }
+    return f;
+  }
+  function partsInTz(ts, tz) {
+    const f = dtf('en-US', tz, { hourCycle: 'h23', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' });
+    const p = {};
+    for (const x of f.formatToParts(ts)) p[x.type] = x.value;
+    return { y: +p.year, mo: +p.month, d: +p.day, h: (+p.hour) % 24, mi: +p.minute, s: +p.second };
+  }
+  const offCache = new Map();
+  // UTC offset in minutes for tz at instant ts (cached per UTC hour)
+  function offsetAt(tz, ts) {
+    const h = Math.floor(ts / HOUR);
+    const k = tz + '|' + h;
+    let v = offCache.get(k);
+    if (v === undefined) {
+      const t = h * HOUR;
+      const p = partsInTz(t, tz);
+      v = Math.round((Date.UTC(p.y, p.mo - 1, p.d, p.h, p.mi, p.s) - t) / MIN);
+      offCache.set(k, v);
+    }
+    return v;
+  }
+  function local(tz, ts) {
+    const o = offsetAt(tz, ts);
+    const d = new Date(ts + o * MIN);
+    return {
+      y: d.getUTCFullYear(), mo: d.getUTCMonth() + 1, d: d.getUTCDate(), wd: d.getUTCDay(),
+      h: d.getUTCHours(), mi: d.getUTCMinutes(), s: d.getUTCSeconds(),
+      m: d.getUTCHours() * 60 + d.getUTCMinutes(), off: o
+    };
+  }
+  // wall-clock time in tz -> instant
+  function zonedToTs(y, mo, d, h, mi, tz) {
+    const guess = Date.UTC(y, mo - 1, d, h, mi);
+    let ts = guess - offsetAt(tz, guess) * MIN;
+    ts = guess - offsetAt(tz, ts) * MIN;
+    return ts;
+  }
+  const pad = (n) => String(n).padStart(2, '0');
+  function dateStr(ts, tz) { const l = local(tz, ts); return l.y + '-' + pad(l.mo) + '-' + pad(l.d); }
+  function hm(ts, tz) { const l = local(tz, ts); return pad(l.h) + ':' + pad(l.mi); }
+  function toMin(s) { const a = String(s || '0:0').split(':').map(Number); return (a[0] || 0) * 60 + (a[1] || 0); }
+  function fromMin(m) { return pad(Math.floor(m / 60) % 24) + ':' + pad(m % 60); }
+
+  function gmtLabel(tz, ts) {
+    const o = offsetAt(tz, ts);
+    const a = Math.abs(o);
+    return 'UTC' + (o < 0 ? '−' : '+') + Math.floor(a / 60) + (a % 60 ? ':' + pad(a % 60) : '');
+  }
+  function fmtMins(m) {
+    m = Math.max(0, Math.round(m));
+    const h = Math.floor(m / 60), mm = m % 60;
+    if (h && mm) return h + 'h ' + mm + 'm';
+    if (h) return h + 'h';
+    return mm + 'm';
+  }
+  function fmtDur(ms) {
+    const m = Math.max(0, Math.round(ms / MIN));
+    const d = Math.floor(m / 1440), h = Math.floor((m % 1440) / 60), mm = m % 60;
+    if (d > 0) return d + 'd ' + h + 'h';
+    return fmtMins(h * 60 + mm);
+  }
+  function digital(l, h12) {
+    const mm = pad(l.mi), ss = pad(l.s);
+    if (h12) return { hh: String(l.h % 12 || 12), mm, ss, ap: l.h < 12 ? 'AM' : 'PM' };
+    return { hh: pad(l.h), mm, ss, ap: '' };
+  }
+  function makeFmt(locale, h12) {
+    const tOpts = h12 ? { hour: 'numeric', minute: '2-digit', hour12: true } : { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' };
+    const sOpts = Object.assign({ day: 'numeric', month: 'short' }, tOpts);
+    return {
+      time: (ts, tz) => dtf(locale, tz, tOpts).format(ts),
+      date: (ts, tz, o) => dtf(locale, tz, o || { weekday: 'short', day: 'numeric', month: 'short' }).format(ts),
+      stamp: (ts, tz) => dtf(locale, tz, sOpts).format(ts)
+    };
+  }
+
+  // ---------- availability ----------
+  function isAsleep(sl, m) {
+    const s = toMin(sl.start), e = toMin(sl.end);
+    if (s === e) return false;
+    return s < e ? (m >= s && m < e) : (m >= s || m < e);
+  }
+  function sleepStatus(sl, m) {
+    const s = toMin(sl.start), e = toMin(sl.end);
+    if (s === e) return { asleep: false, mins: null };
+    if (isAsleep(sl, m)) { const r = (e - m + 1440) % 1440; return { asleep: true, mins: r === 0 ? 1440 : r }; }
+    return { asleep: false, mins: (s - m + 1440) % 1440 };
+  }
+  function busyAt(blocks, wd, m) {
+    for (const b of blocks) {
+      const s = toMin(b.start), e = toMin(b.end);
+      if (s === e) continue;
+      if (s < e) { if (b.days.includes(wd) && m >= s && m < e) return b; }
+      else {
+        if (b.days.includes(wd) && m >= s) return b;
+        if (b.days.includes((wd + 6) % 7) && m < e) return b;
+      }
+    }
+    return null;
+  }
+  // why a person is NOT free at instant ts (null = free)
+  function blockReason(p, ts, sessions) {
+    const l = local(p.tz, ts);
+    if (isAsleep(p.sleep, l.m)) return { type: 'sleep' };
+    const b = busyAt(p.busy, l.wd, l.m);
+    if (b) return { type: 'busy', label: b.label || '' };
+    for (const s of sessions) {
+      if (!s.cancelledAt && ts >= s.startTs && ts < s.endTs) return { type: 'session', label: s.id };
+    }
+    return null;
+  }
+  function checkRange(people, startTs, endTs, sessions) {
+    const by = {}; let ok = true;
+    const pts = [];
+    for (let t = startTs; t < endTs; t += 5 * MIN) pts.push(t);
+    pts.push(endTs - MIN);
+    for (const p of people) {
+      const seen = new Set(), list = [];
+      for (const t of pts) {
+        const r = blockReason(p, t, sessions);
+        if (r) {
+          const k = r.type + '|' + (r.label || '');
+          if (!seen.has(k)) { seen.add(k); list.push({ type: r.type, label: r.label, ts: t }); }
+        }
+      }
+      by[p.id] = list;
+      if (list.length) ok = false;
+    }
+    return { ok, by };
+  }
+  function computeWindows(people, sessions, fromTs, days, durMin) {
+    const start = Math.ceil(fromTs / STEP) * STEP, n = days * 96, free = new Array(n);
+    for (let i = 0; i < n; i++) {
+      const ts = start + i * STEP;
+      let f = true;
+      for (const p of people) {
+        if (blockReason(p, ts, sessions) || blockReason(p, ts + STEP - MIN, sessions)) { f = false; break; }
+      }
+      free[i] = f;
+    }
+    const wins = [], dur = durMin * MIN, half = 30 * MIN;
+    let i = 0;
+    while (i < n) {
+      if (!free[i]) { i++; continue; }
+      let j = i;
+      while (j < n && free[j]) j++;
+      const s = start + i * STEP, e = start + j * STEP, starts = [];
+      if (s % half !== 0 && s + dur <= e) starts.push(s);
+      for (let t = Math.ceil(s / half) * half; t + dur <= e; t += half) starts.push(t);
+      if (starts.length) wins.push({ startTs: s, endTs: e, starts });
+      i = j;
+    }
+    return wins;
+  }
+  function mergeSegs(states, labels) {
+    const out = [];
+    let i = 0;
+    while (i < states.length) {
+      let j = i;
+      while (j < states.length && states[j] === states[i] && labels[j] === labels[i]) j++;
+      out.push({ s: i, e: j, state: states[i], label: labels[i] });
+      i = j;
+    }
+    return out;
+  }
+  function buildTracks(people, dayStart, n, sessions) {
+    const res = {}, st = {};
+    for (const p of people) {
+      const states = [], labels = [];
+      for (let i = 0; i < n; i++) {
+        const ts = dayStart + i * STEP;
+        const r = blockReason(p, ts, sessions) || blockReason(p, ts + STEP - MIN, sessions);
+        states.push(r ? r.type : 'free');
+        labels.push(r ? (r.label || '') : '');
+      }
+      st[p.id] = states;
+      res[p.id] = mergeSegs(states, labels);
+    }
+    const both = [], bl = [];
+    for (let i = 0; i < n; i++) { both.push(people.every((p) => st[p.id][i] === 'free') ? 'both' : 'none'); bl.push(''); }
+    res.both = mergeSegs(both, bl).filter((x) => x.state === 'both');
+    res.bothMin = res.both.reduce((a, x) => a + (x.e - x.s) * 15, 0);
+    return res;
+  }
+  // first moment in [fromTs,toTs] where the clock gap between two zones changes (DST)
+  function gapChange(tzA, tzB, fromTs, toTs) {
+    const g0 = offsetAt(tzA, fromTs) - offsetAt(tzB, fromTs);
+    for (let t = fromTs; t <= toTs; t += HOUR) {
+      const g = offsetAt(tzA, t) - offsetAt(tzB, t);
+      if (g !== g0) return { at: t, before: g0, after: g };
+    }
+    return null;
+  }
+
+  function daysText(days, names) {
+    const order = [1, 2, 3, 4, 5, 6, 0];
+    const sel = order.filter((d) => days.includes(d));
+    if (!sel.length) return '—';
+    const runs = [];
+    let cur = [sel[0]];
+    for (let i = 1; i < sel.length; i++) {
+      if (order.indexOf(sel[i]) === order.indexOf(sel[i - 1]) + 1) cur.push(sel[i]);
+      else { runs.push(cur); cur = [sel[i]]; }
+    }
+    runs.push(cur);
+    return runs.map((r) => (r.length >= 3 ? names[r[0]] + '–' + names[r[r.length - 1]] : r.map((d) => names[d]).join(', '))).join(', ');
+  }
+  function nextId(list, prefix, width) {
+    let max = 0;
+    for (const x of list) {
+      if (typeof x.id === 'string' && x.id.startsWith(prefix)) {
+        const n = parseInt(x.id.slice(prefix.length), 10);
+        if (!isNaN(n) && n > max) max = n;
+      }
+    }
+    return prefix + String(max + 1).padStart(width, '0');
+  }
+  function resolve(p) {
+    const c = cityById(p.cityId);
+    return Object.assign({}, p, { tz: c.tz, city: c.city, cc: c.cc, cityLabel: cityLabel(c) });
+  }
+
+  // ---------- seed ----------
+  function seed() {
+    const now = Date.now();
+    const vn = (s) => Date.parse(s + '+07:00');
+    return {
+      v: 1,
+      ui: { actor: 'elin', lang: 'vi', h12: false, tab: 'overview' },
+      profiles: {
+        elin: {
+          id: 'elin', name: 'Elin', cityId: 'hcm',
+          sleep: { start: '23:30', end: '07:00' },
+          busy: [{ id: 'b-elin-work', label: 'Work', days: [1, 2, 3, 4, 5], start: '08:30', end: '17:30' }],
+          updatedAt: now
+        },
+        hannah: {
+          id: 'hannah', name: 'Hannah', cityId: 'toronto',
+          sleep: { start: '23:00', end: '07:30' },
+          busy: [
+            { id: 'b-hannah-class', label: 'Classes', days: [1, 2, 3, 5], start: '10:00', end: '16:00' },
+            { id: 'b-hannah-job', label: 'Part-time job', days: [6], start: '12:00', end: '16:00' }
+          ],
+          updatedAt: now
+        }
+      },
+      sessions: [
+        {
+          id: 'S01', startTs: vn('2026-10-04T18:00:00'), endTs: vn('2026-10-04T19:00:00'), completed: true,
+          topic: 'Recursion', content: 'Recursion basic', resourceIds: ['RS01', 'RS02'], exerciseIds: ['ES01'],
+          notes: '', createdAt: now, updatedAt: now
+        },
+        {
+          id: 'S02', startTs: vn('2026-10-08T19:00:00'), endTs: vn('2026-10-08T21:00:00'), completed: true,
+          topic: 'Recursion + Arrays', content: 'Recursion, Array, ArrayList', resourceIds: ['RS03', 'RS04', 'RS05'], exerciseIds: [],
+          notes: '', createdAt: now, updatedAt: now
+        }
+      ],
+      requests: [],
+      resources: [
+        { id: 'RS01', session: 'S01', type: 'Code', title: 'Recursion basic', description: 'Cheat :)) open this file if you need a source to compare with your solution, or just open it, run and check your manual result', link: 'https://drive.google.com/file/d/1-kf0w67g0I9GJCHm29ENpRkjQc6t0UYQ/view?usp=sharing', updatedAt: now },
+        { id: 'RS02', session: 'S01', type: 'Image', title: 'Recursion visualization', description: 'RS05 visualizes better', link: 'https://drive.google.com/file/d/1gelWgFbjgNUD4SdKPHbMgYJ9U3tpk7OR/view?usp=sharing', updatedAt: now },
+        { id: 'RS03', session: 'S02', type: 'File', title: 'Arrays', description: 'Full content about Array', link: 'https://drive.google.com/file/d/1l8_XqUUKDR354aNi-Wl_-sC1FtiU7cCk/view?usp=sharing', updatedAt: now },
+        { id: 'RS04', session: 'S02', type: 'Image', title: 'Binary Search (with recursion)', description: '', link: 'https://drive.google.com/file/d/18l7abbj5SxayeJ3PSeF84DGldozSN-lo/view?usp=sharing', updatedAt: now }
+      ]
+    };
+  }
+
+  const api = {
+    MIN, HOUR, DAY, STEP, CITIES, cityById, cityLabel, dtf, offsetAt, local, zonedToTs, dateStr, hm, toMin, fromMin,
+    gmtLabel, fmtMins, fmtDur, digital, makeFmt, isAsleep, sleepStatus, busyAt, blockReason, checkRange, computeWindows,
+    buildTracks, gapChange, daysText, nextId, resolve, seed
+  };
+  root.SS = api;
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useMemo, useRef, useCallback, createContext, useContext } = React;
+const SS = window.SS;
+const { MIN, DAY, STEP } = SS;
+const Ctx = createContext(null);
+const useC = () => useContext(Ctx);
+
+const PC = {
+  elin: { c: 'var(--navy)', soft: 'var(--navy-soft)', on: 'var(--on-navy)' },
+  hannah: { c: 'var(--burgundy)', soft: 'var(--burgundy-soft)', on: 'var(--on-burgundy)' }
+};
+const KEY = 'study-sync-v1';
+const TABS = ['overview', 'find', 'sessions', 'calendar', 'resources', 'profiles'];
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) {
+      const o = JSON.parse(raw);
+      if (o && o.v === 1 && o.profiles && o.sessions) return o;
+    }
+  } catch (e) { /* storage unavailable */ }
+  return SS.seed();
+}
+function saveData(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { /* ignore */ } }
+
+function useNow(ms) {
+  const [n, setN] = useState(Date.now());
+  useEffect(() => { const t = setInterval(() => setN(Date.now()), ms || 1000); return () => clearInterval(t); }, [ms]);
+  return n;
+}
+
+/* ---------- small shared pieces ---------- */
+function Seg({ value, onChange, options, label }) {
+  return (
+    <div className="seg" role="group" aria-label={label}>
+      {options.map((o) => (
+        <button key={String(o.v)} type="button" className="seg-b" aria-pressed={value === o.v}
+          onClick={() => onChange(o.v)}
+          style={value === o.v && o.c ? { background: o.c, color: o.on } : undefined}>
+          {o.l}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function Modal({ title, onClose, children, wide }) {
+  useEffect(() => {
+    const h = (e) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [onClose]);
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-6"
+      style={{ background: 'rgba(10,15,32,.55)' }}
+      onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div role="dialog" aria-modal="true" aria-label={title}
+        className={'rise bg-bg w-full overflow-auto rounded-t-3xl sm:rounded-3xl border ' + (wide ? 'sm:max-w-2xl' : 'sm:max-w-lg')}
+        style={{ maxHeight: '92%', paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}>
+        <div className="flex items-center justify-between gap-3 px-5 pt-5 pb-2">
+          <h2 className="text-xl font-bold">{title}</h2>
+          <button type="button" className="btn btn-sm" onClick={onClose} aria-label="Close">✕</button>
+        </div>
+        <div className="px-5 pb-5 pt-2">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function Field({ id, label, children, hint }) {
+  return (
+    <div className="grid gap-1.5 min-w-0">
+      <label htmlFor={id} className="lbl">{label}</label>
+      {children}
+      {hint ? <div className="text-xs text-muted">{hint}</div> : null}
+    </div>
+  );
+}
+
+function PersonDot({ id }) { return <span className="dot" style={{ background: PC[id].c }} />; }
+
+function TypeIcon({ t }) {
+  const p = { width: 18, height: 18, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true };
+  if (t === 'Code') return (<svg {...p}><path d="M8 7l-5 5 5 5" /><path d="M16 7l5 5-5 5" /><path d="M14 4l-4 16" /></svg>);
+  if (t === 'Image') return (<svg {...p}><rect x="3" y="4" width="18" height="16" rx="3" /><circle cx="9" cy="10" r="1.6" /><path d="M21 16l-5-5-8 8" /></svg>);
+  if (t === 'Video') return (<svg {...p}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M10 9.5v5l4.5-2.5z" /></svg>);
+  if (t === 'Link') return (<svg {...p}><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" /><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" /></svg>);
+  return (<svg {...p}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" /><path d="M14 3v5h5" /><path d="M9 13h6M9 17h4" /></svg>);
+}
+
+/* ---------- App ---------- */
+function App() {
+  const [data, setData] = useState(loadData);
+  useEffect(() => { saveData(data); }, [data]);
+  const update = useCallback((fn) => setData((d) => { const c = JSON.parse(JSON.stringify(d)); fn(c); return c; }), []);
+  const now = useNow(1000);
+  const ui = data.ui;
+  const lang = ui.lang, h12 = ui.h12, actor = ui.actor, other = actor === 'elin' ? 'hannah' : 'elin';
+  const locale = lang === 'vi' ? 'vi-VN' : 'en-US';
+  const L = useCallback((vi, en) => (lang === 'vi' ? vi : en), [lang]);
+  const f = useMemo(() => SS.makeFmt(locale, h12), [locale, h12]);
+  const people = useMemo(() => ({ elin: SS.resolve(data.profiles.elin), hannah: SS.resolve(data.profiles.hannah) }), [data.profiles]);
+  const list = useMemo(() => [people.elin, people.hannah], [people]);
+  const activeSessions = useMemo(() => data.sessions.filter((s) => !s.cancelledAt), [data.sessions]);
+
+  const [booking, setBooking] = useState(null);
+  const [editSession, setEditSession] = useState(null);
+  const [resForm, setResForm] = useState(null);
+  const [toast, setToast] = useState(null);
+  useEffect(() => { if (!toast) return; const t = setTimeout(() => setToast(null), 4500); return () => clearTimeout(t); }, [toast]);
+
+  const setUi = useCallback((patch) => update((d) => { Object.assign(d.ui, patch); }), [update]);
+  const stamp = (ts) => f.stamp(ts, people[actor].tz);
+  const reasonText = (c) => (c.type === 'sleep' ? L('đang ngủ', 'asleep') : c.type === 'busy' ? L('bận', 'busy') + (c.label ? ' · ' + c.label : '') : L('trùng buổi ', 'overlaps ') + (c.label || ''));
+  const conflictText = (chk) => list.filter((p) => chk.by[p.id].length)
+    .map((p) => p.name + ': ' + chk.by[p.id].map((c) => reasonText(c) + ' (' + f.time(c.ts, p.tz) + ')').join(', ')).join(' · ');
+  const reset = () => setData((d) => { const s = SS.seed(); s.ui = d.ui; return s; });
+
+  const ctx = {
+    data, update, now, L, f, lang, h12, locale, people, list, activeSessions, actor, other, setUi, stamp, reasonText, conflictText, reset,
+    openBooking: (startTs, dur) => setBooking({ startTs, dur: dur || 60 }),
+    notify: setToast,
+    openSession: setEditSession,
+    openResource: setResForm,
+    go: (t) => { setUi({ tab: t }); window.scrollTo({ top: 0 }); }
+  };
+  const incoming = data.requests.filter((r) => r.status === 'pending' && r.to === actor).length;
+  const tab = TABS.includes(ui.tab) ? ui.tab : 'overview';
+  const tabLabel = {
+    overview: L('Tổng quan', 'Overview'), find: L('Tìm giờ', 'Find time'), sessions: L('Buổi học', 'Sessions'),
+    calendar: L('Lịch', 'Calendar'), resources: L('Tài liệu', 'Resources'), profiles: L('Hồ sơ', 'Profiles')
+  };
+
+  return (
+    <Ctx.Provider value={ctx}>
+      <header className="max-w-6xl mx-auto px-4 sm:px-6 pt-5 pb-4 flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <div className="flex items-center gap-3 min-w-0">
+          <svg width="40" height="34" viewBox="0 0 40 34" aria-hidden="true">
+            <circle cx="14" cy="17" r="13" fill="var(--navy)" />
+            <circle cx="26" cy="17" r="13" fill="var(--burgundy)" fillOpacity=".88" />
+          </svg>
+          <div className="min-w-0">
+            <div className="f-display text-xl font-extrabold leading-none">Study Sync</div>
+            <div className="text-xs text-muted mt-1">Elin × Hannah · {SS.gmtLabel(people.elin.tz, now)} / {SS.gmtLabel(people.hannah.tz, now)}</div>
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="lbl">{L('Bạn là', 'Acting as')}</span>
+          <Seg label="actor" value={actor} onChange={(v) => setUi({ actor: v })}
+            options={[
+              { v: 'elin', l: 'Elin', c: PC.elin.c, on: PC.elin.on },
+              { v: 'hannah', l: 'Hannah', c: PC.hannah.c, on: PC.hannah.on }
+            ]} />
+          <Seg label="language" value={lang} onChange={(v) => setUi({ lang: v })} options={[{ v: 'vi', l: 'VI' }, { v: 'en', l: 'EN' }]} />
+          <Seg label="clock format" value={h12} onChange={(v) => setUi({ h12: v })} options={[{ v: false, l: '24h' }, { v: true, l: '12h' }]} />
+        </div>
+      </header>
+
+      <nav className="sticky z-30 bg-bg border-y" style={{ top: 'env(safe-area-inset-top, 0px)' }} aria-label="Sections">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-2 scroll-x flex gap-1">
+          {TABS.map((t) => (
+            <button key={t} type="button" className="tab" aria-current={tab === t ? 'page' : undefined} onClick={() => ctx.go(t)}>
+              {tabLabel[t]}
+              {t === 'sessions' && incoming > 0 ? (
+                <span className="chip" style={{ background: tab === t ? 'var(--bg)' : 'var(--burgundy)', color: tab === t ? 'var(--ink)' : 'var(--on-burgundy)', padding: '0 .45rem' }}>{incoming}</span>
+              ) : null}
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 min-w-0">
+        {tab === 'overview' && <Overview />}
+        {tab === 'find' && <FindTime />}
+        {tab === 'sessions' && <Sessions />}
+        {tab === 'calendar' && <CalendarTab />}
+        {tab === 'resources' && <Resources />}
+        {tab === 'profiles' && <Profiles />}
+      </main>
+
+      <footer className="max-w-6xl mx-auto px-4 sm:px-6 pb-10 text-xs text-muted">
+        {L('Dữ liệu lưu trong localStorage của trình duyệt này, không có máy chủ. Không cần đăng nhập: chọn “Bạn là” ở trên để thao tác thay Elin hoặc Hannah.',
+          'Data is stored in this browser’s localStorage. There is no server and no login: pick “Acting as” above to act for Elin or Hannah.')}
+      </footer>
+
+      {booking && <BookingModal init={booking} onClose={() => setBooking(null)} />}
+      {editSession && <SessionModal id={editSession} onClose={() => setEditSession(null)} />}
+      {resForm && <ResourceModal init={resForm} onClose={() => setResForm(null)} />}
+      {toast && (
+        <div className="fixed left-0 right-0 z-[60] flex justify-center px-4 pointer-events-none" style={{ bottom: 'calc(1rem + env(safe-area-inset-bottom, 0px))' }}>
+          <div className="rise pointer-events-auto rounded-2xl px-4 py-3 text-sm font-semibold shadow-lg max-w-md" style={{ background: 'var(--ink)', color: 'var(--bg)' }} role="status">{toast}</div>
+        </div>
+      )}
+    </Ctx.Provider>
+  );
+}
+
+/* ---------- Overview ---------- */
+function Overview() {
+  const { data, actor, people, f, L, go } = useC();
+  const incoming = data.requests.filter((r) => r.status === 'pending' && r.to === actor);
+  const me = people[actor];
+  return (
+    <div className="grid gap-6">
+      {incoming.map((r) => (
+        <div key={r.id} className="card-s p-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="min-w-0">
+            <div className="lbl">{L('Đang chờ bạn xác nhận', 'Waiting for your answer')}</div>
+            <div className="font-semibold mt-1">
+              {people[r.from].name} {L('muốn học', 'proposes')} “{r.topic}” · {f.date(r.startTs, me.tz)} {f.time(r.startTs, me.tz)}–{f.time(r.endTs, me.tz)}
+            </div>
+          </div>
+          <button type="button" className="btn btn-primary" onClick={() => go('sessions')}>{L('Xem & trả lời', 'Review')}</button>
+        </div>
+      ))}
+      <ClocksHero />
+      <div className="grid lg:grid-cols-3 gap-6">
+        <NextSession />
+        <div className="lg:col-span-2 min-w-0"><DayTimeline /></div>
+      </div>
+    </div>
+  );
+}
+
+function Analog({ loc }) {
+  const hAng = ((loc.h % 12) + loc.mi / 60) * 30, mAng = (loc.mi + loc.s / 60) * 6, sAng = loc.s * 6;
+  return (
+    <svg viewBox="0 0 100 100" className="w-24 h-24 sm:w-36 sm:h-36 shrink-0" role="img" aria-label="analog clock">
+      <circle cx="50" cy="50" r="47" fill="none" stroke="currentColor" strokeWidth="1.6" />
+      {Array.from({ length: 12 }).map((_, i) => {
+        const a = (i * 30 * Math.PI) / 180, r1 = i % 3 === 0 ? 36 : 40, r2 = 44;
+        return <line key={i} x1={50 + r1 * Math.sin(a)} y1={50 - r1 * Math.cos(a)} x2={50 + r2 * Math.sin(a)} y2={50 - r2 * Math.cos(a)} stroke="currentColor" strokeWidth={i % 3 === 0 ? 2.4 : 1} />;
+      })}
+      <line x1="50" y1="50" x2="50" y2="29" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" transform={`rotate(${hAng} 50 50)`} />
+      <line x1="50" y1="50" x2="50" y2="15" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" transform={`rotate(${mAng} 50 50)`} />
+      <line x1="50" y1="57" x2="50" y2="11" stroke="currentColor" strokeWidth="1" opacity=".7" transform={`rotate(${sAng} 50 50)`} />
+      <circle cx="50" cy="50" r="2.6" fill="currentColor" />
+    </svg>
+  );
+}
+
+function ClockPanel({ p }) {
+  const { now, L, f, h12 } = useC();
+  const c = PC[p.id];
+  const loc = SS.local(p.tz, now);
+  const d = SS.digital(loc, h12);
+  const st = SS.sleepStatus(p.sleep, loc.m);
+  const status = st.mins == null ? L('Luôn thức', 'No sleep window set')
+    : st.asleep ? L('Đang ngủ · dậy sau ', 'Asleep · wakes in ') + SS.fmtMins(st.mins)
+      : L('Đang thức · đi ngủ sau ', 'Awake · bedtime in ') + SS.fmtMins(st.mins);
+  return (
+    <section className="rounded-3xl p-5 sm:p-6 flex flex-wrap items-center gap-x-5 gap-y-3" style={{ background: c.c, color: c.on }} aria-label={p.name + ' clock'}>
+      <Analog loc={loc} />
+      <div className="min-w-0 flex-1" style={{ minWidth: '12rem' }}>
+        <div className="text-xs uppercase font-bold opacity-85" style={{ letterSpacing: '.14em' }}>{p.name} · {p.cityLabel}</div>
+        <div className="font-mono tnum leading-none mt-2 flex items-baseline gap-1 flex-wrap">
+          <span className="text-4xl sm:text-6xl font-semibold">{d.hh}:{d.mm}</span>
+          <span className="text-lg sm:text-2xl opacity-75">:{d.ss}</span>
+          {d.ap ? <span className="text-sm sm:text-lg ml-1 opacity-90">{d.ap}</span> : null}
+        </div>
+        <div className="mt-2 text-sm font-medium">{f.date(now, p.tz, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+        <div className="text-xs opacity-80 mt-0.5">{SS.gmtLabel(p.tz, now)} · {p.tz.replace('_', ' ')}</div>
+        <div className="chip mt-3" style={{ background: c.on, color: c.c }}>{status}</div>
+      </div>
+    </section>
+  );
+}
+
+function ClocksHero() {
+  const { people, now, L } = useC();
+  const A = people.elin, B = people.hannah;
+  const gap = SS.offsetAt(A.tz, now) - SS.offsetAt(B.tz, now);
+  const behind = gap > 0 ? B : A, ahead = gap > 0 ? A : B;
+  const txt = gap === 0 ? L('Hai bạn đang cùng giờ', 'You are on the same time')
+    : L(`${behind.name} chậm hơn ${ahead.name} ${SS.fmtMins(Math.abs(gap))}`, `${behind.name} is ${SS.fmtMins(Math.abs(gap))} behind ${ahead.name}`);
+  const la = SS.local(A.tz, now), lb = SS.local(B.tz, now);
+  const sameDay = la.d === lb.d && la.mo === lb.mo;
+  return (
+    <section aria-label="Clocks" className="grid gap-3">
+      <div className="grid md:grid-cols-2 gap-3">
+        <ClockPanel p={A} />
+        <ClockPanel p={B} />
+      </div>
+      <div className="card px-4 py-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-center">
+        <span className="f-display font-bold text-base">{txt}</span>
+        {!sameDay ? <span className="chip chip-warn">{L('Hai nơi đang khác ngày', 'Different calendar dates right now')}</span> : null}
+      </div>
+    </section>
+  );
+}
+
+function NextSession() {
+  const { activeSessions, now, people, f, L, go } = useC();
+  const s = activeSessions.filter((x) => !x.completed && x.endTs > now).sort((a, b) => a.startTs - b.startTs)[0];
+  const last = activeSessions.filter((x) => x.completed || x.endTs <= now).sort((a, b) => b.startTs - a.startTs)[0];
+  return (
+    <section className="card-s p-5 flex flex-col gap-3 min-w-0" aria-label="Next session">
+      <div className="lbl">{L('Buổi học tiếp theo', 'Next session')}</div>
+      {s ? (
+        <>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="chip">{s.id}</span>
+            <span className={'chip ' + (now >= s.startTs ? 'chip-ok' : '')}>
+              {now >= s.startTs ? L('Đang diễn ra', 'In progress') : L('Còn ', 'In ') + SS.fmtDur(s.startTs - now)}
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold leading-tight">{s.topic}</h3>
+          <div className="grid gap-1.5 text-sm">
+            {[people.elin, people.hannah].map((p) => (
+              <div key={p.id} className="flex items-center gap-2 flex-wrap tnum"><PersonDot id={p.id} /><b>{p.name}</b>
+                <span>{f.date(s.startTs, p.tz)} · {f.time(s.startTs, p.tz)}–{f.time(s.endTs, p.tz)}</span></div>
+            ))}
+          </div>
+          <button type="button" className="btn mt-1 self-start" onClick={() => go('sessions')}>{L('Chi tiết', 'Details')}</button>
+        </>
+      ) : (
+        <>
+          <h3 className="text-2xl font-bold leading-tight">{L('Chưa có buổi nào được lên lịch', 'Nothing scheduled yet')}</h3>
+          <p className="text-sm text-muted">
+            {last ? L(`Buổi gần nhất: ${last.id} · ${last.topic}.`, `Most recent: ${last.id} · ${last.topic}.`) : ''}{' '}
+            {L('Tìm giờ cả hai cùng rảnh rồi gửi lời mời.', 'Find a time you are both free, then send a request.')}
+          </p>
+          <button type="button" className="btn btn-primary self-start" onClick={() => go('find')}>{L('Tìm giờ chung', 'Find a shared time')}</button>
+        </>
+      )}
+    </section>
+  );
+}
+
+/* ---------- Day timeline ---------- */
+function segStyle(state, pid) {
+  const c = PC[pid];
+  if (state === 'free') return { background: c.c, color: c.on };
+  if (state === 'busy') return { background: c.soft, color: c.c };
+  if (state === 'sleep') return { color: 'var(--muted)' };
+  if (state === 'session') return { background: 'var(--ink)', color: 'var(--bg)' };
+  return {};
+}
+
+function Track({ pid, segs, n, dayStart }) {
+  const { people, f, L } = useC();
+  const tz = people[pid].tz;
+  const nm = { free: L('rảnh', 'free'), busy: L('bận', 'busy'), sleep: L('ngủ', 'asleep'), session: L('buổi học', 'session'), both: L('cả hai rảnh', 'both free') };
+  return (
+    <div className="relative h-9 rounded-xl overflow-hidden bg-surface">
+      {segs.map((s, i) => {
+        const st = dayStart + s.s * STEP, en = dayStart + s.e * STEP;
+        const style = Object.assign({ left: (s.s / n) * 100 + '%', width: ((s.e - s.s) / n) * 100 + '%', boxShadow: 'inset -1px 0 0 var(--bg)' }, segStyle(s.state, pid));
+        return (
+          <div key={i} className={'absolute top-0 bottom-0 overflow-hidden text-[11px] font-semibold px-1.5 flex items-center whitespace-nowrap ' + (s.state === 'sleep' ? 'hatch' : '')}
+            style={style} title={`${f.time(st, tz)}–${f.time(en, tz)} · ${nm[s.state]}${s.label ? ' · ' + s.label : ''}`}>
+            {s.state === 'busy' || s.state === 'session' ? s.label : ''}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function DayTimeline() {
+  const { people, list, activeSessions, now, f, L, actor, openBooking } = useC();
+  const [axis, setAxis] = useState('elin');
+  const [dateStr, setDateStr] = useState(() => SS.dateStr(Date.now(), people[actor].tz));
+  const axTz = people[axis].tz, otherId = axis === 'elin' ? 'hannah' : 'elin', otTz = people[otherId].tz;
+  const [y, mo, d] = dateStr.split('-').map(Number);
+  const valid = !isNaN(y) && !isNaN(mo) && !isNaN(d);
+  const dayStart = valid ? SS.zonedToTs(y, mo, d, 0, 0, axTz) : 0;
+  const nextStart = valid ? SS.zonedToTs(y, mo, d + 1, 0, 0, axTz) : STEP * 96;
+  const n = Math.round((nextStart - dayStart) / STEP);
+  const tr = useMemo(() => (valid ? SS.buildTracks(list, dayStart, n, activeSessions) : null), [list, dayStart, n, activeSessions, valid]);
+  const shift = (k) => { const t = SS.zonedToTs(y, mo, d + k, 12, 0, axTz); setDateStr(SS.dateStr(t, axTz)); };
+  const span = n * STEP;
+  const nowPos = valid && now >= dayStart && now < dayStart + span ? ((now - dayStart) / span) * 100 : null;
+  const ticks = [];
+  if (valid) {
+    for (let i = 0; i < 8; i++) {
+      const ts = SS.zonedToTs(y, mo, d, i * 3, 0, axTz);
+      const ods = SS.dateStr(ts, otTz);
+      ticks.push({ i, pos: ((ts - dayStart) / span) * 100, a: f.time(ts, axTz), b: f.time(ts, otTz), dd: ods < dateStr ? '−1d' : ods > dateStr ? '+1d' : '' });
+    }
+  }
+  const book = (w) => {
+    const half = 30 * MIN;
+    const st = Math.max(Math.ceil(w.startTs / half) * half, Math.ceil(now / half) * half);
+    openBooking(st, 60);
+  };
+  const wins = tr ? tr.both.map((s) => ({ startTs: dayStart + s.s * STEP, endTs: dayStart + s.e * STEP })) : [];
+  return (
+    <section className="card p-4 sm:p-5 min-w-0" aria-label="Day timeline">
+      <div className="flex flex-wrap items-end justify-between gap-3 mb-4">
+        <div>
+          <h2 className="text-xl font-bold">{L('Một ngày của hai người', 'One day, side by side')}</h2>
+          <p className="text-sm text-muted">{L('Trục giờ theo', 'Hours shown in')} {people[axis].cityLabel}</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" className="btn btn-sm" onClick={() => shift(-1)} aria-label="Previous day">←</button>
+          <input id="tl-date" type="date" className="input" style={{ width: 'auto' }} value={dateStr} onChange={(e) => setDateStr(e.target.value)} aria-label="Date" />
+          <button type="button" className="btn btn-sm" onClick={() => shift(1)} aria-label="Next day">→</button>
+          <Seg label="axis" value={axis} onChange={setAxis} options={[{ v: 'elin', l: 'Elin' }, { v: 'hannah', l: 'Hannah' }]} />
+        </div>
+      </div>
+
+      {tr ? (
+        <>
+          <div className="relative grid gap-3">
+            {[['elin', people.elin], ['hannah', people.hannah]].map(([id, p]) => (
+              <div key={id} className="grid gap-1">
+                <div className="flex items-center gap-2 text-xs font-semibold"><PersonDot id={id} />{p.name}<span className="text-muted font-normal">· {p.city}</span></div>
+                <Track pid={id} segs={tr[id]} n={n} dayStart={dayStart} />
+              </div>
+            ))}
+            <div className="grid gap-1">
+              <div className="flex items-center gap-2 text-xs font-semibold"><span className="dot stripes" />{L('Cả hai cùng rảnh', 'Both free')}
+                <span className="text-muted font-normal tnum">· {tr.bothMin ? SS.fmtMins(tr.bothMin) : L('không có', 'none')}</span></div>
+              <div className="relative h-9 rounded-xl overflow-hidden bg-surface">
+                {tr.both.map((s, i) => (
+                  <div key={i} className="absolute top-0 bottom-0 stripes" style={{ left: (s.s / n) * 100 + '%', width: ((s.e - s.s) / n) * 100 + '%' }}
+                    title={`${f.time(dayStart + s.s * STEP, axTz)}–${f.time(dayStart + s.e * STEP, axTz)}`} />
+                ))}
+              </div>
+            </div>
+            {nowPos != null ? (
+              <div className="absolute top-0 bottom-0 pointer-events-none" style={{ left: nowPos + '%', width: 2, background: 'var(--ink)' }}>
+                <span className="absolute -top-0.5 left-1 text-[10px] font-bold px-1 rounded" style={{ background: 'var(--ink)', color: 'var(--bg)' }}>{L('bây giờ', 'now')}</span>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="relative h-11 mt-1.5" aria-hidden="true">
+            {ticks.map((t) => (
+              <div key={t.i} className={'absolute top-0 text-[11px] leading-tight tnum ' + (t.i % 2 ? 'hidden sm:block' : '')}
+                style={{ left: t.pos + '%', transform: t.i === 0 ? 'none' : 'translateX(-50%)', textAlign: t.i === 0 ? 'left' : 'center' }}>
+                <div className="font-semibold">{t.a}</div>
+                <div className="text-muted">{people[otherId].name.slice(0, 1)} {t.b}{t.dd ? ' ' + t.dd : ''}</div>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted mt-2">
+            <span className="inline-flex items-center gap-1.5"><span className="dot" style={{ background: 'var(--navy)' }} /><span className="dot" style={{ background: 'var(--burgundy)' }} />{L('Rảnh', 'Free')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="dot" style={{ background: 'var(--navy-soft)', border: '1px solid var(--navy)' }} /><span className="dot" style={{ background: 'var(--burgundy-soft)', border: '1px solid var(--burgundy)' }} />{L('Bận', 'Busy')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="dot hatch" style={{ border: '1px solid var(--muted)' }} />{L('Ngủ', 'Asleep')}</span>
+            <span className="inline-flex items-center gap-1.5"><span className="dot" style={{ background: 'var(--ink)' }} />{L('Buổi học', 'Session')}</span>
+          </div>
+
+          <div className="mt-4 pt-4 border-t grid gap-2">
+            <div className="lbl">{L('Khung giờ chung trong ngày', 'Shared windows this day')}</div>
+            {wins.length === 0 ? <div className="text-sm text-muted">{L('Hôm đó hai bạn không có giờ rảnh chung.', 'No shared free time on this day.')}</div> : (
+              <div className="flex flex-wrap gap-2">
+                {wins.map((w, i) => {
+                  const past = w.endTs <= now;
+                  return (
+                    <button key={i} type="button" className="slot" disabled={past} style={past ? { opacity: .5, cursor: 'not-allowed' } : undefined} onClick={() => book(w)}>
+                      <span className="text-sm font-semibold tnum">{people.elin.name} {f.time(w.startTs, people.elin.tz)}–{f.time(w.endTs, people.elin.tz)}</span>
+                      <span className="text-xs text-muted tnum">{people.hannah.name} {f.time(w.startTs, people.hannah.tz)}–{f.time(w.endTs, people.hannah.tz)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </>
+      ) : <div className="text-sm text-muted">{L('Chọn một ngày hợp lệ.', 'Pick a valid date.')}</div>}
+    </section>
+  );
+}
+
+/* ---------- Find time ---------- */
+function FindTime() {
+  const { list, activeSessions, now, f, L, actor, other, people, openBooking, lang } = useC();
+  const [dur, setDur] = useState(60);
+  const [days, setDays] = useState(14);
+  const slotNow = Math.floor(now / STEP);
+  const me = people[actor], ot = people[other];
+  const wins = useMemo(() => SS.computeWindows(list, activeSessions, (slotNow + 1) * STEP, days, dur), [list, activeSessions, slotNow, days, dur]);
+  const change = SS.gapChange(people.elin.tz, people.hannah.tz, now, now + days * DAY);
+  const groups = [];
+  for (const w of wins) {
+    const key = SS.dateStr(w.startTs, me.tz);
+    let g = groups[groups.length - 1];
+    if (!g || g.key !== key) { g = { key, ts: w.startTs, wins: [] }; groups.push(g); }
+    g.wins.push(w);
+  }
+  const totalSlots = wins.reduce((a, w) => a + w.starts.length, 0);
+  const dd = (ts, tz) => { const a = SS.dateStr(ts, tz), b = SS.dateStr(ts, me.tz); return a < b ? ' −1d' : a > b ? ' +1d' : ''; };
+  return (
+    <div className="grid gap-5">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="max-w-xl">
+          <h1 className="text-3xl font-extrabold">{L('Tìm giờ cả hai cùng rảnh', 'Find a time you are both free')}</h1>
+          <p className="text-muted mt-1">
+            {L('Tính từ múi giờ, giờ ngủ, lịch bận hàng tuần và các buổi đã chốt của Elin và Hannah. Bấm vào một giờ để gửi lời mời.',
+              'Calculated from both time zones, sleep hours, weekly commitments and booked sessions. Tap a time to send a request.')}
+          </p>
+        </div>
+        <div className="grid gap-2">
+          <div className="flex flex-wrap items-center gap-2"><span className="lbl w-20">{L('Thời lượng', 'Length')}</span>
+            <Seg label="duration" value={dur} onChange={setDur} options={[45, 60, 90, 120, 180].map((v) => ({ v, l: v + 'm' }))} /></div>
+          <div className="flex flex-wrap items-center gap-2"><span className="lbl w-20">{L('Trong', 'Next')}</span>
+            <Seg label="range" value={days} onChange={setDays} options={[7, 14, 30].map((v) => ({ v, l: v + L(' ngày', ' days') }))} /></div>
+        </div>
+      </div>
+
+      {change ? (
+        <div className="card-s p-4 text-sm flex gap-3 items-start" style={{ background: 'var(--warn-soft)', color: 'var(--warn)' }}>
+          <b className="shrink-0">DST</b>
+          <span>
+            {L(`Ngày ${f.date(change.at, me.tz, { day: 'numeric', month: 'long' })} giờ mùa hè đổi: độ lệch giờ giữa hai bạn chuyển từ ${SS.fmtMins(Math.abs(change.before))} sang ${SS.fmtMins(Math.abs(change.after))}. Các khung giờ sau ngày đó đã được tính theo múi giờ mới.`,
+              `Daylight saving changes on ${f.date(change.at, me.tz, { day: 'numeric', month: 'long' })}: the gap between you moves from ${SS.fmtMins(Math.abs(change.before))} to ${SS.fmtMins(Math.abs(change.after))}. Slots after that date already use the new offset.`)}
+          </span>
+        </div>
+      ) : null}
+
+      <div className="text-sm text-muted tnum">
+        {wins.length ? L(`${totalSlots} giờ bắt đầu có thể chọn · ${wins.length} khung rảnh chung`, `${totalSlots} possible start times · ${wins.length} shared windows`) : ''}
+      </div>
+
+      {groups.length === 0 ? (
+        <div className="card p-8 text-center">
+          <h3 className="text-xl font-bold">{L('Không có khung giờ chung', 'No shared window found')}</h3>
+          <p className="text-muted mt-1 max-w-md mx-auto">{L('Thử rút ngắn thời lượng, tăng số ngày, hoặc chỉnh giờ ngủ / lịch bận trong tab Hồ sơ.', 'Try a shorter session, a longer range, or adjust sleep hours and commitments in Profiles.')}</p>
+        </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-2">
+          {groups.map((g) => (
+            <section key={g.key} className="card p-4 sm:p-5 min-w-0">
+              <h3 className="text-lg font-bold">{f.date(g.ts, me.tz, { weekday: 'long', day: 'numeric', month: 'long' })}</h3>
+              {g.wins.map((w, i) => (
+                <div key={i} className="mt-3 pt-3 border-t grid gap-2">
+                  <div className="grid gap-0.5 text-sm tnum">
+                    {[me, ot].map((p) => (
+                      <div key={p.id} className="flex items-center gap-2 flex-wrap"><PersonDot id={p.id} /><b>{p.name}</b>
+                        <span>{f.time(w.startTs, p.tz)}–{f.time(w.endTs, p.tz)}{p.id === me.id ? '' : dd(w.startTs, p.tz)}</span></div>
+                    ))}
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {w.starts.map((t) => (
+                      <button key={t} type="button" className="slot" onClick={() => openBooking(t, dur)}>
+                        <span className="font-semibold tnum">{f.time(t, me.tz)}</span>
+                        <span className="text-xs text-muted tnum">{ot.name} {f.time(t, ot.tz)}{dd(t, ot.tz)}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </section>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ---------- Sessions ---------- */
+function statusOf(s, now) {
+  if (s.cancelledAt) return 'cancelled';
+  if (s.completed || s.endTs <= now) return 'done';
+  if (s.startTs <= now) return 'live';
+  return 'upcoming';
+}
+
+function TimeLines({ startTs, endTs }) {
+  const { people, f } = useC();
+  return (
+    <div className="grid gap-1 text-sm tnum">
+      {[people.elin, people.hannah].map((p) => (
+        <div key={p.id} className="flex items-center gap-2 flex-wrap"><PersonDot id={p.id} /><b>{p.name}</b>
+          <span>{f.date(startTs, p.tz)} · {f.time(startTs, p.tz)}–{f.time(endTs, p.tz)}</span></div>
+      ))}
+    </div>
+  );
+}
+
+function RequestCard({ r }) {
+  const { people, list, activeSessions, update, L, actor, stamp, conflictText, notify } = useC();
+  const [err, setErr] = useState('');
+  const mine = r.from === actor;
+  const chipCls = { pending: 'chip-warn', accepted: 'chip-ok', declined: '', cancelled: '' }[r.status];
+  const statusTxt = { pending: L('Chờ xác nhận', 'Pending'), accepted: L('Đã chấp nhận', 'Accepted'), declined: L('Đã từ chối', 'Declined'), cancelled: L('Đã huỷ', 'Cancelled') }[r.status];
+  const accept = () => {
+    if (r.startTs <= Date.now()) { setErr(L('Giờ này đã qua, hãy từ chối và tạo lời mời mới.', 'This time has passed. Decline and send a new request.')); return; }
+    const chk = SS.checkRange(list, r.startTs, r.endTs, activeSessions);
+    if (!chk.ok) { setErr(L('Không còn phù hợp: ', 'No longer free: ') + conflictText(chk)); return; }
+    update((d) => {
+      const rq = d.requests.find((x) => x.id === r.id), t = Date.now();
+      const id = SS.nextId(d.sessions, 'S', 2);
+      rq.status = 'accepted'; rq.acceptedAt = t; rq.respondedAt = t; rq.updatedAt = t; rq.sessionId = id;
+      d.sessions.push({ id, startTs: r.startTs, endTs: r.endTs, topic: r.topic, content: '', resourceIds: [], exerciseIds: [], notes: r.note || '', requestId: r.id, requestedBy: r.from, acceptedBy: r.to, createdAt: r.createdAt, updatedAt: t, acceptedAt: t });
+    });
+    notify(L('Đã thêm buổi học vào lịch của cả hai.', 'Session added to both calendars.'));
+  };
+  const setStatus = (status, key) => update((d) => { const rq = d.requests.find((x) => x.id === r.id), t = Date.now(); rq.status = status; rq[key] = t; rq.respondedAt = t; rq.updatedAt = t; });
+  return (
+    <article className="card p-4 sm:p-5 grid gap-3 min-w-0">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          <PersonDot id={r.from} /><b>{people[r.from].name}</b><span className="text-muted">→</span><PersonDot id={r.to} /><b>{people[r.to].name}</b>
+        </div>
+        <span className={'chip ' + chipCls}>{statusTxt}</span>
+      </div>
+      <h3 className="text-lg font-bold leading-snug">{r.topic}</h3>
+      <TimeLines startTs={r.startTs} endTs={r.endTs} />
+      {r.note ? <p className="text-sm text-muted">“{r.note}”</p> : null}
+      <div className="text-xs text-muted tnum flex flex-wrap gap-x-4 gap-y-0.5">
+        <span>{L('Gửi', 'Sent')} {stamp(r.createdAt)}</span>
+        {r.acceptedAt ? <span>{L('Chấp nhận lúc', 'Accepted at')} {stamp(r.acceptedAt)}</span> : null}
+        {r.declinedAt ? <span>{L('Từ chối lúc', 'Declined at')} {stamp(r.declinedAt)}</span> : null}
+        {r.cancelledAt ? <span>{L('Huỷ lúc', 'Cancelled at')} {stamp(r.cancelledAt)}</span> : null}
+        <span>{L('Cập nhật', 'Updated')} {stamp(r.updatedAt)}</span>
+      </div>
+      {err ? <div className="chip chip-warn" style={{ borderRadius: '.8rem', padding: '.5rem .8rem' }}>{err}</div> : null}
+      {r.status === 'pending' ? (
+        mine ? (
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="text-sm text-muted">{L(`Đang chờ ${people[r.to].name} xác nhận`, `Waiting for ${people[r.to].name} to confirm`)}</span>
+            <button type="button" className="btn btn-sm" onClick={() => setStatus('cancelled', 'cancelledAt')}>{L('Huỷ lời mời', 'Cancel request')}</button>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            <button type="button" className="btn btn-primary" onClick={accept}>{L('Chấp nhận', 'Accept')}</button>
+            <button type="button" className="btn" onClick={() => setStatus('declined', 'declinedAt')}>{L('Từ chối', 'Decline')}</button>
+          </div>
+        )
+      ) : null}
+    </article>
+  );
+}
+
+function SessionCard({ s }) {
+  const { data, now, L, stamp, people, openSession, openResource } = useC();
+  const st = statusOf(s, now);
+  const chip = { done: '', upcoming: 'chip-ok', live: 'chip-ok', cancelled: 'chip-warn' }[st];
+  const label = { done: L('Đã học', 'Done'), upcoming: L('Sắp tới', 'Upcoming'), live: L('Đang diễn ra', 'Live'), cancelled: L('Đã huỷ', 'Cancelled') }[st];
+  return (
+    <article className="card p-4 sm:p-5 grid gap-3 min-w-0" style={st === 'cancelled' ? { opacity: .65 } : undefined}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <div className="flex items-center gap-2 flex-wrap"><span className="chip" style={{ background: 'var(--ink)', color: 'var(--bg)' }}>{s.id}</span><span className={'chip ' + chip}>{label}</span></div>
+          <h3 className="text-xl font-bold mt-2 leading-snug">{s.topic}</h3>
+          {s.content ? <p className="text-sm text-muted">{s.content}</p> : null}
+        </div>
+        <button type="button" className="btn btn-sm shrink-0" onClick={() => openSession(s.id)}>{L('Sửa', 'Edit')}</button>
+      </div>
+      <TimeLines startTs={s.startTs} endTs={s.endTs} />
+      {(s.resourceIds.length > 0 || s.exerciseIds.length > 0) ? (
+        <div className="flex flex-wrap gap-1.5">
+          {s.resourceIds.map((id) => {
+            const r = data.resources.find((x) => x.id === id);
+            return r && r.link ? (
+              <a key={id} className="chip" href={r.link} target="_blank" rel="noopener noreferrer"><TypeIcon t={r.type} />{id} · {r.title}</a>
+            ) : r ? (
+              <span key={id} className="chip"><TypeIcon t={r.type} />{id} · {r.title}</span>
+            ) : (
+              <button key={id} type="button" className="chip chip-dash" onClick={() => openResource({ id, session: s.id })}>{id} · {L('chưa có, thêm', 'missing, add')}</button>
+            );
+          })}
+          {s.exerciseIds.map((id) => <span key={id} className="chip" style={{ background: 'var(--navy-soft)', color: 'var(--navy)' }}>{L('Bài tập', 'Exercise')} {id}</span>)}
+        </div>
+      ) : null}
+      {s.notes ? <p className="text-sm rounded-xl bg-surface px-3 py-2">{s.notes}</p> : null}
+      <div className="text-xs text-muted tnum flex flex-wrap gap-x-4 gap-y-0.5">
+        {s.acceptedAt ? <span>{L('Chấp nhận', 'Accepted')} {stamp(s.acceptedAt)}{s.acceptedBy ? ' · ' + people[s.acceptedBy].name : ''}</span> : null}
+        <span>{L('Cập nhật', 'Updated')} {stamp(s.updatedAt)}</span>
+      </div>
+    </article>
+  );
+}
+
+function Sessions() {
+  const { data, actor, now, L, go } = useC();
+  const [filter, setFilter] = useState('all');
+  const [hist, setHist] = useState(false);
+  const pendIn = data.requests.filter((r) => r.status === 'pending' && r.to === actor);
+  const pendOut = data.requests.filter((r) => r.status === 'pending' && r.from === actor);
+  const history = data.requests.filter((r) => r.status !== 'pending');
+  const all = data.sessions.slice();
+  const up = all.filter((s) => ['upcoming', 'live'].includes(statusOf(s, now))).sort((a, b) => a.startTs - b.startTs);
+  const past = all.filter((s) => ['done'].includes(statusOf(s, now))).sort((a, b) => b.startTs - a.startTs);
+  const canc = all.filter((s) => s.cancelledAt).sort((a, b) => b.startTs - a.startTs);
+  const shown = filter === 'upcoming' ? up : filter === 'past' ? past : filter === 'cancelled' ? canc : [...up, ...past, ...canc];
+  return (
+    <div className="grid gap-8">
+      <section className="grid gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h1 className="text-3xl font-extrabold">{L('Lời mời học', 'Requests')}</h1>
+            <p className="text-muted mt-1">{L('Người nhận chấp nhận thì buổi học tự vào lịch của cả hai.', 'When the other person accepts, the session lands in both calendars.')}</p>
+          </div>
+          <button type="button" className="btn btn-primary" onClick={() => go('find')}>{L('+ Tìm giờ & đặt lịch', '+ Find a time & book')}</button>
+        </div>
+        {pendIn.length + pendOut.length === 0 ? (
+          <div className="card-s p-5 text-sm text-muted">{L('Không có lời mời nào đang chờ.', 'No pending requests.')}</div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {pendIn.map((r) => <RequestCard key={r.id} r={r} />)}
+            {pendOut.map((r) => <RequestCard key={r.id} r={r} />)}
+          </div>
+        )}
+        {history.length > 0 ? (
+          <div className="grid gap-3">
+            <button type="button" className="btn btn-sm self-start" onClick={() => setHist(!hist)} aria-expanded={hist}>
+              {hist ? L('Ẩn lịch sử lời mời', 'Hide request history') : L(`Lịch sử lời mời (${history.length})`, `Request history (${history.length})`)}
+            </button>
+            {hist ? <div className="grid gap-4 md:grid-cols-2">{history.map((r) => <RequestCard key={r.id} r={r} />)}</div> : null}
+          </div>
+        ) : null}
+      </section>
+
+      <section className="grid gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="text-2xl font-extrabold">{L('Các buổi học', 'Sessions')}</h2>
+          <Seg label="filter" value={filter} onChange={setFilter} options={[
+            { v: 'all', l: L('Tất cả', 'All') }, { v: 'upcoming', l: L('Sắp tới', 'Upcoming') }, { v: 'past', l: L('Đã học', 'Past') }, { v: 'cancelled', l: L('Đã huỷ', 'Cancelled') }]} />
+        </div>
+        {shown.length === 0 ? <div className="card-s p-5 text-sm text-muted">{L('Chưa có buổi nào ở mục này.', 'Nothing here yet.')}</div> : (
+          <div className="grid gap-4 md:grid-cols-2">{shown.map((s) => <SessionCard key={s.id} s={s} />)}</div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+/* ---------- Calendar (both people) ---------- */
+function AgendaColumn({ p }) {
+  const { data, activeSessions, now, f, L, lang, go } = useC();
+  const c = PC[p.id];
+  const names = lang === 'vi' ? ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const items = [
+    ...activeSessions.map((s) => ({ kind: 's', id: s.id, title: s.topic, startTs: s.startTs, endTs: s.endTs, done: s.completed || s.endTs <= now })),
+    ...data.requests.filter((r) => r.status === 'pending').map((r) => ({ kind: 'r', id: 'REQ', title: r.topic, startTs: r.startTs, endTs: r.endTs, done: false }))
+  ].sort((a, b) => a.startTs - b.startTs);
+  const nowIdx = items.findIndex((x) => !x.done);
+  const loc = SS.local(p.tz, now);
+  const d = SS.digital(loc, false);
+  return (
+    <section className="card overflow-hidden min-w-0" aria-label={p.name + ' calendar'}>
+      <div className="p-4 sm:p-5" style={{ background: c.c, color: c.on }}>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div>
+            <div className="text-xl font-extrabold f-display">{p.name}</div>
+            <div className="text-xs opacity-85">{p.cityLabel} · {SS.gmtLabel(p.tz, now)}</div>
+          </div>
+          <div className="font-mono text-2xl font-semibold tnum">{d.hh}:{d.mm}</div>
+        </div>
+        <div className="mt-3 grid gap-1 text-xs opacity-95">
+          <div>{L('Ngủ', 'Sleep')} {p.sleep.start}–{p.sleep.end}</div>
+          {p.busy.map((b) => <div key={b.id}>{b.label || L('Bận', 'Busy')} · {SS.daysText(b.days, names)} {b.start}–{b.end}</div>)}
+        </div>
+        <button type="button" className="btn btn-sm mt-3" style={{ background: 'transparent', color: c.on, borderColor: c.on }} onClick={() => go('profiles')}>{L('Sửa lịch', 'Edit schedule')}</button>
+      </div>
+      <div className="p-4 sm:p-5 grid gap-3">
+        {items.length === 0 ? <div className="text-sm text-muted">{L('Chưa có buổi nào.', 'No sessions yet.')}</div> : null}
+        {items.map((x, i) => {
+          return (
+            <div key={x.kind + x.id + x.startTs}>
+              {i === nowIdx ? <div className="flex items-center gap-2 text-xs font-bold mb-3" style={{ color: c.c }}><span className="flex-1 h-px" style={{ background: c.c }} />{L('Bây giờ', 'Now')}<span className="flex-1 h-px" style={{ background: c.c }} /></div> : null}
+              <div className="flex gap-3" style={x.done ? { opacity: .6 } : undefined}>
+                <div className="shrink-0 w-14 rounded-2xl text-center py-1.5" style={{ background: c.soft, color: c.c }}>
+                  <div className="text-xl font-extrabold leading-none f-display tnum">{f.date(x.startTs, p.tz, { day: 'numeric' })}</div>
+                  <div className="text-[10px] font-bold uppercase mt-0.5">{f.date(x.startTs, p.tz, { month: 'short' })}</div>
+                </div>
+                <div className="min-w-0">
+                  <div className="font-semibold leading-snug" style={x.kind === 'r' ? { fontStyle: 'italic' } : undefined}>{x.title}</div>
+                  <div className="text-sm text-muted tnum">{f.date(x.startTs, p.tz, { weekday: 'short' })} · {f.time(x.startTs, p.tz)}–{f.time(x.endTs, p.tz)}</div>
+                  <div className="mt-1">
+                    {x.kind === 'r' ? <span className="chip chip-dash">{L('Chờ xác nhận', 'Pending')}</span> : <span className="chip">{x.id}</span>}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function CalendarTab() {
+  const { L, people } = useC();
+  return (
+    <div className="grid gap-5">
+      <div>
+        <h1 className="text-3xl font-extrabold">{L('Lịch học của hai người', 'Both calendars')}</h1>
+        <p className="text-muted mt-1">{L('Cùng một buổi học, hiển thị theo giờ địa phương của từng người.', 'The same sessions, shown in each person’s local time.')}</p>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <AgendaColumn p={people.elin} />
+        <AgendaColumn p={people.hannah} />
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Resources ---------- */
+function Resources() {
+  const { data, L, stamp, openResource } = useC();
+  const [sf, setSf] = useState('all');
+  const [tf, setTf] = useState('all');
+  const sessionIds = data.sessions.map((s) => s.id);
+  const types = Array.from(new Set(data.resources.map((r) => r.type)));
+  const missing = [];
+  for (const s of data.sessions) for (const id of s.resourceIds) if (!data.resources.find((r) => r.id === id)) missing.push({ id, session: s.id });
+  const shownRes = data.resources.filter((r) => (sf === 'all' || r.session === sf) && (tf === 'all' || r.type === tf));
+  const shownMissing = missing.filter((m) => (sf === 'all' || m.session === sf) && tf === 'all');
+  return (
+    <div className="grid gap-5">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-3xl font-extrabold">{L('Tài liệu học', 'Resources')}</h1>
+          <p className="text-muted mt-1">{L('Mở nhanh tài liệu của từng buổi.', 'Open each session’s materials in one click.')}</p>
+        </div>
+        <button type="button" className="btn btn-primary" onClick={() => openResource({})}>{L('+ Thêm tài liệu', '+ Add resource')}</button>
+      </div>
+      <div className="grid gap-2">
+        <div className="scroll-x"><Seg label="session filter" value={sf} onChange={setSf} options={[{ v: 'all', l: L('Mọi buổi', 'All sessions') }, ...sessionIds.map((id) => ({ v: id, l: id }))]} /></div>
+        <div className="scroll-x"><Seg label="type filter" value={tf} onChange={setTf} options={[{ v: 'all', l: L('Mọi loại', 'All types') }, ...types.map((t) => ({ v: t, l: t }))]} /></div>
+      </div>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {shownRes.map((r) => (
+          <article key={r.id} className="card p-4 sm:p-5 grid gap-3 content-start min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2 flex-wrap"><span className="chip" style={{ background: 'var(--ink)', color: 'var(--bg)' }}>{r.id}</span><span className="chip"><TypeIcon t={r.type} />{r.type}</span></div>
+              <span className="chip" style={{ background: 'var(--navy-soft)', color: 'var(--navy)' }}>{r.session}</span>
+            </div>
+            <h3 className="text-lg font-bold leading-snug">{r.title}</h3>
+            <p className="text-sm text-muted" style={{ overflowWrap: 'anywhere' }}>{r.description || L('Chưa có mô tả.', 'No description.')}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              {r.link ? <a className="btn btn-sm btn-navy" href={r.link} target="_blank" rel="noopener noreferrer">{L('Mở tài liệu ↗', 'Open ↗')}</a> : <span className="chip chip-warn">{L('Chưa có link', 'No link')}</span>}
+              <button type="button" className="btn btn-sm" onClick={() => openResource({ edit: r.id })}>{L('Sửa', 'Edit')}</button>
+            </div>
+            <div className="text-xs text-muted tnum">{L('Cập nhật', 'Updated')} {stamp(r.updatedAt)}</div>
+          </article>
+        ))}
+        {shownMissing.map((m) => (
+          <article key={m.id} className="rounded-[1.25rem] p-4 sm:p-5 grid gap-3 content-start min-w-0" style={{ border: '1.5px dashed var(--muted)' }}>
+            <div className="flex items-center justify-between gap-2"><span className="chip chip-dash">{m.id}</span><span className="chip" style={{ background: 'var(--navy-soft)', color: 'var(--navy)' }}>{m.session}</span></div>
+            <h3 className="text-lg font-bold leading-snug">{L('Chưa có tài liệu', 'Not added yet')}</h3>
+            <p className="text-sm text-muted">{L(`Buổi ${m.session} có nhắc tới ${m.id} nhưng chưa có link.`, `${m.session} mentions ${m.id}, but it has no entry yet.`)}</p>
+            <button type="button" className="btn btn-sm self-start" onClick={() => openResource({ id: m.id, session: m.session })}>{L('Thêm ' + m.id, 'Add ' + m.id)}</button>
+          </article>
+        ))}
+      </div>
+      {shownRes.length + shownMissing.length === 0 ? <div className="card-s p-5 text-sm text-muted">{L('Không có tài liệu khớp bộ lọc.', 'No resources match these filters.')}</div> : null}
+    </div>
+  );
+}
+
+/* ---------- Profiles ---------- */
+function ProfileCard({ pid }) {
+  const { data, update, L, lang, now, f, people, stamp } = useC();
+  const p = data.profiles[pid], rp = people[pid], c = PC[pid];
+  const dayOrder = [1, 2, 3, 4, 5, 6, 0];
+  const dn = lang === 'vi' ? { 0: 'CN', 1: 'T2', 2: 'T3', 3: 'T4', 4: 'T5', 5: 'T6', 6: 'T7' } : { 0: 'Sun', 1: 'Mon', 2: 'Tue', 3: 'Wed', 4: 'Thu', 5: 'Fri', 6: 'Sat' };
+  const patch = (fn) => update((d) => { fn(d.profiles[pid]); d.profiles[pid].updatedAt = Date.now(); });
+  const setBusy = (bid, fn) => patch((pp) => { const b = pp.busy.find((x) => x.id === bid); if (b) fn(b); });
+  const loc = SS.local(rp.tz, now);
+  const d = SS.digital(loc, false);
+  return (
+    <section className="card overflow-hidden min-w-0" aria-label={p.name + ' profile'}>
+      <div className="p-4 sm:p-5 flex flex-wrap items-center justify-between gap-2" style={{ background: c.c, color: c.on }}>
+        <div>
+          <div className="text-2xl font-extrabold f-display">{p.name}</div>
+          <div className="text-xs opacity-85 tnum">{rp.cityLabel} · {SS.gmtLabel(rp.tz, now)} · {d.hh}:{d.mm}</div>
+        </div>
+        <div className="text-xs opacity-90 tnum">{L('Cập nhật', 'Updated')} {stamp(p.updatedAt)}</div>
+      </div>
+      <div className="p-4 sm:p-5 grid gap-5">
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Field id={pid + '-name'} label={L('Tên', 'Name')}>
+            <input id={pid + '-name'} className="input" value={p.name} onChange={(e) => patch((pp) => { pp.name = e.target.value; })} />
+          </Field>
+          <Field id={pid + '-city'} label={L('Thành phố', 'City')}>
+            <select id={pid + '-city'} className="input" value={p.cityId} onChange={(e) => patch((pp) => { pp.cityId = e.target.value; })}>
+              {SS.CITIES.map((ct) => <option key={ct.id} value={ct.id}>{SS.cityLabel(ct)}</option>)}
+            </select>
+          </Field>
+        </div>
+        <div>
+          <div className="lbl mb-2">{L('Giờ ngủ', 'Sleep hours')}</div>
+          <div className="grid grid-cols-2 gap-3">
+            <Field id={pid + '-sleep-start'} label={L('Đi ngủ', 'Bedtime')}>
+              <input id={pid + '-sleep-start'} type="time" className="input" value={p.sleep.start} onChange={(e) => patch((pp) => { if (e.target.value) pp.sleep.start = e.target.value; })} />
+            </Field>
+            <Field id={pid + '-sleep-end'} label={L('Thức dậy', 'Wake up')}>
+              <input id={pid + '-sleep-end'} type="time" className="input" value={p.sleep.end} onChange={(e) => patch((pp) => { if (e.target.value) pp.sleep.end = e.target.value; })} />
+            </Field>
+          </div>
+        </div>
+        <div className="grid gap-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="lbl">{L('Lịch bận hàng tuần (giờ địa phương)', 'Weekly commitments (local time)')}</div>
+            <button type="button" className="btn btn-sm" onClick={() => patch((pp) => { pp.busy.push({ id: 'b' + Date.now().toString(36), label: L('Bận', 'Busy'), days: [1, 2, 3, 4, 5], start: '09:00', end: '17:00' }); })}>{L('+ Thêm', '+ Add')}</button>
+          </div>
+          {p.busy.length === 0 ? <div className="text-sm text-muted">{L('Chưa có lịch bận, cả ngày đều rảnh (trừ giờ ngủ).', 'Nothing blocked: free all day except sleep.')}</div> : null}
+          {p.busy.map((b) => (
+            <div key={b.id} className="card-s p-3 grid gap-3">
+              <div className="flex gap-2">
+                <input id={pid + '-b-' + b.id + '-label'} aria-label={L('Tên', 'Label')} className="input" value={b.label} onChange={(e) => setBusy(b.id, (x) => { x.label = e.target.value; })} />
+                <button type="button" className="btn btn-sm btn-warn shrink-0" onClick={() => patch((pp) => { pp.busy = pp.busy.filter((x) => x.id !== b.id); })} aria-label={L('Xoá', 'Delete')}>✕</button>
+              </div>
+              <div className="flex flex-wrap gap-1.5" role="group" aria-label="Days">
+                {dayOrder.map((dv) => {
+                  const on = b.days.includes(dv);
+                  return (
+                    <button key={dv} type="button" aria-pressed={on} className="btn btn-sm" style={{ minWidth: '2.6rem', padding: '.3rem .45rem', background: on ? c.c : 'var(--bg)', color: on ? c.on : 'var(--muted)', borderColor: on ? c.c : 'var(--line)' }}
+                      onClick={() => setBusy(b.id, (x) => { x.days = x.days.includes(dv) ? x.days.filter((q) => q !== dv) : [...x.days, dv]; })}>{dn[dv]}</button>
+                  );
+                })}
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Field id={pid + '-b-' + b.id + '-s'} label={L('Từ', 'From')}>
+                  <input id={pid + '-b-' + b.id + '-s'} type="time" className="input" value={b.start} onChange={(e) => { if (e.target.value) setBusy(b.id, (x) => { x.start = e.target.value; }); }} />
+                </Field>
+                <Field id={pid + '-b-' + b.id + '-e'} label={L('Đến', 'To')}>
+                  <input id={pid + '-b-' + b.id + '-e'} type="time" className="input" value={b.end} onChange={(e) => { if (e.target.value) setBusy(b.id, (x) => { x.end = e.target.value; }); }} />
+                </Field>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Profiles() {
+  const { L, reset } = useC();
+  const [armed, setArmed] = useState(false);
+  useEffect(() => { if (!armed) return; const t = setTimeout(() => setArmed(false), 4000); return () => clearTimeout(t); }, [armed]);
+  return (
+    <div className="grid gap-5">
+      <div>
+        <h1 className="text-3xl font-extrabold">{L('Hồ sơ & lịch bận', 'Profiles & availability')}</h1>
+        <p className="text-muted mt-1 max-w-2xl">{L('Chỉnh thành phố, giờ ngủ và lịch bận của cả hai. Mọi thay đổi lưu ngay và cập nhật ngay vào phần tìm giờ. Lịch bận đang là dữ liệu mẫu, hãy sửa cho đúng thực tế.',
+          'Edit city, sleep hours and commitments for both people. Changes save instantly and feed straight into the time finder. The commitments shown are examples, so adjust them to real life.')}</p>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <ProfileCard pid="elin" />
+        <ProfileCard pid="hannah" />
+      </div>
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="button" className={'btn ' + (armed ? 'btn-warn' : '')} onClick={() => { if (armed) { reset(); setArmed(false); } else setArmed(true); }}>
+          {armed ? L('Bấm lần nữa để xoá mọi thay đổi', 'Click again to wipe all changes') : L('Đặt lại dữ liệu mẫu', 'Reset to sample data')}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ---------- Booking ---------- */
+function BookingModal({ init, onClose }) {
+  const { actor, other, people, activeSessions, data, update, L, f, now, notify, go, reasonText } = useC();
+  const me = people[actor], ot = people[other];
+  const [dateStr, setDateStr] = useState(SS.dateStr(init.startTs, me.tz));
+  const [time, setTime] = useState(SS.hm(init.startTs, me.tz));
+  const [dur, setDur] = useState(init.dur);
+  const [topic, setTopic] = useState('');
+  const [note, setNote] = useState('');
+  const [y, mo, d] = dateStr.split('-').map(Number);
+  const [hh, mm] = time.split(':').map(Number);
+  const valid = !!dateStr && !!time && !isNaN(y) && !isNaN(hh);
+  const startTs = valid ? SS.zonedToTs(y, mo, d, hh, mm || 0, me.tz) : 0;
+  const endTs = startTs + dur * MIN;
+  const chk = useMemo(() => (valid ? SS.checkRange([me, ot], startTs, endTs, activeSessions) : { ok: false, by: { elin: [], hannah: [] } }), [valid, startTs, endTs, me, ot, activeSessions]);
+  const past = valid && startTs <= now;
+  const overlapPending = valid ? data.requests.filter((r) => r.status === 'pending' && r.startTs < endTs && r.endTs > startTs) : [];
+  const ok = valid && chk.ok && !past;
+  const submit = (e) => {
+    e.preventDefault();
+    if (!ok) return;
+    const t = Date.now();
+    update((dd) => {
+      dd.requests.unshift({ id: 'R' + t.toString(36), from: actor, to: other, startTs, endTs, topic: topic.trim() || L('Buổi học mới', 'New session'), note: note.trim(), status: 'pending', createdAt: t, updatedAt: t });
+    });
+    notify(L(`Đã gửi lời mời, chờ ${ot.name} xác nhận.`, `Request sent. Waiting for ${ot.name} to confirm.`));
+    go('sessions');
+    onClose();
+  };
+  return (
+    <Modal title={L('Đặt lịch học', 'Book a session')} onClose={onClose}>
+      <form className="grid gap-4" onSubmit={submit}>
+        <div className="text-sm text-muted">{L(`Giờ bên dưới theo múi giờ của ${me.name} (${me.cityLabel}).`, `Times below use ${me.name}’s zone (${me.cityLabel}).`)}</div>
+        <div className="grid grid-cols-2 gap-3">
+          <Field id="bk-date" label={L('Ngày', 'Date')}><input id="bk-date" type="date" className="input" value={dateStr} onChange={(e) => setDateStr(e.target.value)} required /></Field>
+          <Field id="bk-time" label={L('Bắt đầu', 'Start')}><input id="bk-time" type="time" step="900" className="input" value={time} onChange={(e) => setTime(e.target.value)} required /></Field>
+        </div>
+        <Field id="bk-dur" label={L('Thời lượng', 'Length')}>
+          <select id="bk-dur" className="input" value={dur} onChange={(e) => setDur(Number(e.target.value))}>
+            {[30, 45, 60, 90, 120, 150, 180].map((v) => <option key={v} value={v}>{SS.fmtMins(v)}</option>)}
+          </select>
+        </Field>
+
+        <div className="card-s p-3 grid gap-2" aria-live="polite">
+          {valid ? [me, ot].map((p) => {
+            const cs = chk.by[p.id];
+            return (
+              <div key={p.id} className="grid gap-0.5">
+                <div className="flex items-center gap-2 flex-wrap text-sm tnum"><PersonDot id={p.id} /><b>{p.name}</b>
+                  <span>{f.date(startTs, p.tz)} · {f.time(startTs, p.tz)}–{f.time(endTs, p.tz)}</span>
+                  <span className={'chip ' + (cs.length ? 'chip-warn' : 'chip-ok')}>{cs.length ? L('Không rảnh', 'Not free') : L('Rảnh', 'Free')}</span></div>
+                {cs.length ? <div className="text-xs pl-4" style={{ color: 'var(--warn)' }}>{cs.map((c) => reasonText(c) + ' (' + f.time(c.ts, p.tz) + ')').join(' · ')}</div> : null}
+              </div>
+            );
+          }) : <div className="text-sm text-muted">{L('Chọn ngày và giờ.', 'Choose a date and time.')}</div>}
+          {past ? <div className="chip chip-warn" style={{ borderRadius: '.7rem' }}>{L('Giờ này đã qua.', 'That time has already passed.')}</div> : null}
+          {overlapPending.length ? <div className="text-xs text-muted">{L('Lưu ý: đang có lời mời khác chờ xác nhận trùng khung giờ này.', 'Note: another pending request overlaps this time.')}</div> : null}
+        </div>
+
+        <Field id="bk-topic" label={L('Chủ đề', 'Topic')}><input id="bk-topic" className="input" value={topic} onChange={(e) => setTopic(e.target.value)} placeholder={L('Ví dụ: Linked List', 'e.g. Linked List')} /></Field>
+        <Field id="bk-note" label={L('Ghi chú', 'Note')}><textarea id="bk-note" className="input" value={note} onChange={(e) => setNote(e.target.value)} /></Field>
+        <div className="flex flex-wrap justify-end gap-2">
+          <button type="button" className="btn" onClick={onClose}>{L('Đóng', 'Close')}</button>
+          <button type="submit" className="btn btn-primary" disabled={!ok}>{L(`Gửi lời mời cho ${ot.name}`, `Send request to ${ot.name}`)}</button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+/* ---------- Session edit ---------- */
+function SessionModal({ id, onClose }) {
+  const { data, update, L, now, notify } = useC();
+  const s = data.sessions.find((x) => x.id === id);
+  const [topic, setTopic] = useState(s ? s.topic : '');
+  const [content, setContent] = useState(s ? s.content : '');
+  const [res, setRes] = useState(s ? s.resourceIds.join(', ') : '');
+  const [ex, setEx] = useState(s ? s.exerciseIds.join(', ') : '');
+  const [notes, setNotes] = useState(s ? s.notes : '');
+  const [armed, setArmed] = useState(false);
+  if (!s) return null;
+  const ids = (v) => v.split(/[\s,;]+/).filter(Boolean).map((x) => x.toUpperCase());
+  const canCancel = !s.cancelledAt && !s.completed && s.endTs > now;
+  const save = (e) => {
+    e.preventDefault();
+    update((d) => {
+      const x = d.sessions.find((q) => q.id === id);
+      x.topic = topic.trim() || x.topic; x.content = content.trim(); x.resourceIds = ids(res); x.exerciseIds = ids(ex); x.notes = notes.trim(); x.updatedAt = Date.now();
+    });
+    notify(L('Đã lưu buổi học.', 'Session saved.'));
+    onClose();
+  };
+  const cancel = () => {
+    if (!armed) { setArmed(true); return; }
+    update((d) => {
+      const t = Date.now();
+      const x = d.sessions.find((q) => q.id === id);
+      x.cancelledAt = t; x.updatedAt = t;
+      const rq = d.requests.find((q) => q.id === x.requestId);
+      if (rq) { rq.status = 'cancelled'; rq.cancelledAt = t; rq.updatedAt = t; }
+    });
+    notify(L('Đã huỷ buổi học, giờ đó rảnh lại cho cả hai.', 'Session cancelled. The slot is free again for both.'));
+    onClose();
+  };
+  return (
+    <Modal title={`${L('Sửa buổi', 'Edit session')} ${s.id}`} onClose={onClose}>
+      <form className="grid gap-4" onSubmit={save}>
+        <Field id="se-topic" label={L('Chủ đề', 'Topic')}><input id="se-topic" className="input" value={topic} onChange={(e) => setTopic(e.target.value)} /></Field>
+        <Field id="se-content" label={L('Nội dung chính', 'Main content')}><textarea id="se-content" className="input" value={content} onChange={(e) => setContent(e.target.value)} /></Field>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Field id="se-res" label={L('Mã tài liệu', 'Resource IDs')} hint="RS01, RS02"><input id="se-res" className="input" value={res} onChange={(e) => setRes(e.target.value)} /></Field>
+          <Field id="se-ex" label={L('Mã bài tập', 'Exercise IDs')} hint="ES01"><input id="se-ex" className="input" value={ex} onChange={(e) => setEx(e.target.value)} /></Field>
+        </div>
+        <Field id="se-notes" label={L('Ghi chú', 'Notes')}><textarea id="se-notes" className="input" value={notes} onChange={(e) => setNotes(e.target.value)} /></Field>
+        <div className="flex flex-wrap justify-between gap-2">
+          <div>{canCancel ? <button type="button" className={'btn btn-warn'} onClick={cancel}>{armed ? L('Bấm lần nữa để huỷ', 'Click again to cancel') : L('Huỷ buổi học', 'Cancel session')}</button> : null}</div>
+          <div className="flex gap-2">
+            <button type="button" className="btn" onClick={onClose}>{L('Đóng', 'Close')}</button>
+            <button type="submit" className="btn btn-primary">{L('Lưu', 'Save')}</button>
+          </div>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+/* ---------- Resource edit / add ---------- */
+function ResourceModal({ init, onClose }) {
+  const { data, update, L, notify } = useC();
+  const existing = init.edit ? data.resources.find((r) => r.id === init.edit) : null;
+  const [session, setSession] = useState(existing ? existing.session : init.session || (data.sessions[data.sessions.length - 1] || {}).id || '');
+  const [type, setType] = useState(existing ? existing.type : 'File');
+  const [title, setTitle] = useState(existing ? existing.title : '');
+  const [desc, setDesc] = useState(existing ? existing.description : '');
+  const [link, setLink] = useState(existing ? existing.link : '');
+  const [armed, setArmed] = useState(false);
+  const rid = existing ? existing.id : init.id || SS.nextId(data.resources, 'RS', 2);
+  const linkOk = !link.trim() || /^https?:\/\//i.test(link.trim());
+  const save = (e) => {
+    e.preventDefault();
+    if (!title.trim() || !linkOk) return;
+    update((d) => {
+      const t = Date.now();
+      const rec = { id: rid, session, type, title: title.trim(), description: desc.trim(), link: link.trim(), updatedAt: t };
+      const i = d.resources.findIndex((r) => r.id === rid);
+      if (i >= 0) d.resources[i] = rec; else d.resources.push(rec);
+      for (const s of d.sessions) {
+        if (s.id === session) { if (!s.resourceIds.includes(rid)) { s.resourceIds.push(rid); s.updatedAt = t; } }
+        else if (existing && s.resourceIds.includes(rid) && existing.session === s.id) { s.resourceIds = s.resourceIds.filter((q) => q !== rid); s.updatedAt = t; }
+      }
+    });
+    notify(L('Đã lưu tài liệu ' + rid + '.', rid + ' saved.'));
+    onClose();
+  };
+  const del = () => {
+    if (!armed) { setArmed(true); return; }
+    update((d) => { d.resources = d.resources.filter((r) => r.id !== rid); });
+    notify(L('Đã xoá ' + rid + '.', rid + ' deleted.'));
+    onClose();
+  };
+  return (
+    <Modal title={existing ? `${L('Sửa tài liệu', 'Edit resource')} ${rid}` : `${L('Thêm tài liệu', 'Add resource')} ${rid}`} onClose={onClose}>
+      <form className="grid gap-4" onSubmit={save}>
+        <div className="grid grid-cols-2 gap-3">
+          <Field id="rs-session" label={L('Buổi', 'Session')}>
+            <select id="rs-session" className="input" value={session} onChange={(e) => setSession(e.target.value)}>
+              {data.sessions.map((s) => <option key={s.id} value={s.id}>{s.id} · {s.topic}</option>)}
+            </select>
+          </Field>
+          <Field id="rs-type" label={L('Loại', 'Type')}>
+            <select id="rs-type" className="input" value={type} onChange={(e) => setType(e.target.value)}>
+              {['Code', 'Image', 'File', 'Video', 'Link'].map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </Field>
+        </div>
+        <Field id="rs-title" label={L('Tiêu đề', 'Title')}><input id="rs-title" className="input" value={title} onChange={(e) => setTitle(e.target.value)} required /></Field>
+        <Field id="rs-desc" label={L('Mô tả', 'Description')}><textarea id="rs-desc" className="input" value={desc} onChange={(e) => setDesc(e.target.value)} /></Field>
+        <Field id="rs-link" label="Link" hint={!linkOk ? L('Link cần bắt đầu bằng http:// hoặc https://', 'The link must start with http:// or https://') : ''}>
+          <input id="rs-link" className="input" value={link} onChange={(e) => setLink(e.target.value)} placeholder="https://drive.google.com/…" inputMode="url" />
+        </Field>
+        <div className="flex flex-wrap justify-between gap-2">
+          <div>{existing ? <button type="button" className="btn btn-warn" onClick={del}>{armed ? L('Bấm lần nữa để xoá', 'Click again to delete') : L('Xoá', 'Delete')}</button> : null}</div>
+          <div className="flex gap-2">
+            <button type="button" className="btn" onClick={onClose}>{L('Đóng', 'Close')}</button>
+            <button type="submit" className="btn btn-primary" disabled={!title.trim() || !linkOk}>{L('Lưu', 'Save')}</button>
+          </div>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+</script>
+
+</body></html>
